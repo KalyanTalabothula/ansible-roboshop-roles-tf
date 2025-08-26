@@ -1,0 +1,113 @@
+vault/*.yaml
+
+# ansible-vault create <file-name>
+
+# New Vault password: admin123
+# Confirm New Vault password: admin123
+
+# cat <file-name>
+
+# 123142343232543253425345 yevari daggara password untumdho vallu chudachhu 
+
+# ansible-vault view <file-name>
+
+# Vault password: admin123
+#  now you can see that, whats there in like any test 
+
+# To edit ansible-vault edit <file-name>
+# asking Vault password: admin123
+
+
+# so Vault ane dhanni GitHub loki push cheyatam safe or not ?? 
+# even encripted ina, obviosly safe, but not recommeded to push to Git. so appudu nenu yemi cheyali .gitignore ane file create chesi andulo { vault/*.yaml } ani petti, generally indhulo kuda yemi push avvadu, nenu e passwords ni yekkada pettali, ekkada server lo pettali, git push chesi nappudu Vault ane folder radu. so server lopala create chesukovali. 
+
+# mkdir vault
+# cd vault/
+# ansible-vault create mysql.yaml ani estunna
+# now it asking New Vault password: admin123 ani estunna, miru secure password pettukuntaru obviosuly. 
+# confirm New Vault password : admin123
+
+# MYSQL_ROOT_PASSWORD: RoboShop@1
+# :wq!
+# so ekkda yemi mentioned chesta ante mysql.yaml lo 
+# vars_files: 
+# - vault/mysql.yaml 
+
+# Acutally manaki passwords unnavi yenti Mysql, rabbitmq... so manam git lo pettakudadhu adi secure kadu so manam ela Vault ane folder roles create chesukoni chestam. 
+
+# eppudu manam mysql lo main.yaml lo password RoboShop@1 tisesi manam {{ MYSQL_ROOT_PASSWORD }} ani istam, mari epppudu vars create cheyali gha, ala cheyakunda mana main.yaml lo ney mention cheysam. 
+
+# ansible-playbook -i inventory.ini mysql.yaml -e "component=mysql"
+# ERROR! Attempting to decrypt but no vault secret found,  ani vastumdhi. 
+# so edi yemi chepputumdi, miru ichharu vars, nenu e vault lopalaki velli mysql.yaml loki velli chustunna, i found nothing ani error chuspistumdhii. 
+
+# so lekapote adugu ani 
+# ansible-playbook -i inventory.ini mysql.yaml -e "component=mysql" --ask-vault-pass
+# ani echhaka ela adugutumdhi
+# Vault password: admin123
+
+# now it is running, because you know password to decrypt. so ee roles lo unde vars lo confidetional evi yemi pettakudadu. so password kachhitam gha vault lo ney pettali.
+
+# that is about Vault. 
+
+
+# Interview lo adugutaru, miru ansible lo vault use cheysara ani??? 
+
+# yes. we used ansible Vault, we are storing our mysql username and password in our Vault, and we give the decryption password at the command line.
+
+# how do create vault file??  --->  ansible-vault create <file-name>
+
+# so manam server loney manam mentioned cheysam, so github lo push cheyatamledu, so excute aayyedhi yekkada ite akkada unte chalu kada so mysql yekkada excute avutumdhi ansible lo excute avutumdhi, so ansible lo adi undhi but we are gitignore it, we don't won't to store in side github.
+
+# so E vault kuda manage cheyatam kuda kumchum kastamegha, ela GitHub lo pettakunda server lo create chesukuntu aa password anevi echhukuntu .... 
+
+# so manaki vere option undhi That is SSM Paramater store.
+
+
+
+
+# So AWS ni yemi antaru server or Platform antara ???
+
+# Eppudu Linux ni --> server ani antanu  ala ney Ansible --> Platform
+
+# Training -- ante only giving classes      Join DevOps is Platform--> training tho patu extrafeature istam so that is called platform. like.. slack team, Q/A team, job portal, LinkedIn videos, Interviews, Mocks...
+
+# so Eppudu AWS ni yendhuku Platform yendhuku antaru...?
+
+
+# Eppudu servers ki passwords kavali, aa passwords ni yela manage cheysukovali? dhani kosam malli separete gha HARSHICROP, VAULt ani ...
+
+# so nenu Harshicrop ni --> Install,manage, update, upgrade
+
+# dhani tarawata e linux/ansible ni integrate with vault software. so edi anta tough kada little bit. 
+# so manam 3rd party software tisukunte vatini Install, manage, upgrade, update, chesukovali ala ney mana current vatitho integrae chesukovali....
+
+# so AWS yemi chesyimdhi.. it has a list of services like DB,server,DNS, NETWORK viti annitin tisukoni vachhi oka chota pettimfhi.
+
+# ekkada nenu password ni store cheysuskotaniki vere chostaki vellakkaraledu, ekkada SSM Paramaters ani untadhi.
+
+# System manager loki velte andhulo paramater store ani untadhi.
+# ante ekkda manam konni screate tho store chesukovachhu. 
+
+# ala ney / tho store cheyamantadhi to understand project.
+
+
+# Finally SSM parameter store. 
+
+# QUESTION: recently miru chesina improvement yenti mee project lo ????? thsee are senario questions
+
+# ans: we were using ansible vault, but there are challenges to maintain the passwords and vault files, so  I recently proposed SSM Parameter store, I did POC { Proof of Concept }and removed vault and implemented SSM paramater store successfully.
+
+
+# vallu generlly vallu Ansible Vault adugutaru, miru adi chepputuney edi kuda cheppite you are the smart right, you are giving more deapth information right.
+
+
+# QUESTION: now they ask, hoe do you created SSM Paramater ???
+
+# Answer: We created, Screates in SSM paramater store and i used to lookup plaguein, we are able to get passwords through ansible to install boto3 and botocore and python packages for ansible then we were able to featch it. 
+
+
+
+
+
+

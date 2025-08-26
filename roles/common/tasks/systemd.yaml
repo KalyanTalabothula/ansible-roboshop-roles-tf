@@ -1,0 +1,19 @@
+- name: To run our custom microservice we need dot service file
+  ansible.builtin.template:     # <--- not copy: & its NOT template"S"
+    src: "{{ component }}.service.j2"  # <-- {.j2 } means this guys are follwing Jinja2 format template to understand anyone.
+    dest: "/etc/systemd/system/{{ component }}.service"  #.j2 ani evvakudadu destination lo
+
+- name: Running the daemon reload because when ever we are making any change's in systemd folder 
+  ansible.builtin.systemd_service:
+    daemon_reload: true
+
+- name: start and enable "{{ component }}"
+  ansible.builtin.service:
+    name: "{{ component }}"
+    state: restarted
+    enabled: yes
+
+# - name: start "{{ component }}"
+#   ansible.builtin.service:
+#     name: "{{ component }}"
+#     state: restarted    # <--- even app is not running we can restart

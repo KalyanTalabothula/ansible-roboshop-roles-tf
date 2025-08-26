@@ -1,0 +1,30 @@
+- name: creating a directory
+  ansible.builtin.file:
+    name: /app
+    state: directory
+
+- name: because of security running with non-rootuser and creating system user 
+  ansible.builtin.user:
+    name: roboshop
+    home: /app
+    shell: /sbin/nologin
+    system: true
+
+# - name: creating a directory
+#   ansible.builtin.file:
+#     name: /app
+#     state: directory
+
+- name: downloading the "{{ component }}" application code
+  ansible.builtin.get_url:
+    url: "https://roboshop-artifacts.s3.amazonaws.com/{{ component }}-v3.zip"
+    dest: "/tmp/{{ component }}.zip"
+
+# this module thinks file exist on ansible control server, needs to extract on to remote machine
+# remote_src: yes means files already exist in catalogue server
+
+- name: "now unzipping the downloaded file to extract {{ component }} code"
+  ansible.builtin.unarchive:
+    src: "/tmp/{{ component }}.zip"
+    dest: /app
+    remote_src: yes

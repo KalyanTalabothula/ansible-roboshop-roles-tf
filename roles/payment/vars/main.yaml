@@ -1,0 +1,6 @@
+CART_HOST: cart.kalyanu.xyz
+USER_HOST: user.kalyanu.xyz
+RABBITMQ_HOST: rabbitmq.kalyanu.xyz
+
+RABBITMQ_USER: roboshop
+RABBITMQ_PASSWORD: roboshop123

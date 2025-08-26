@@ -1,0 +1,19 @@
+- name: Downloading nodejs version and dependencies 
+  ansible.builtin.include_role:    # <-- Not roles
+    name: common 
+    tasks_from: nodejs
+
+
+# 🔍 calling another role tasks in ansible
+
+- name: app setup 
+  ansible.builtin.include_role:
+    name: common 
+    tasks_from: app-setup
+
+
+
+- name: systemd setup
+  ansible.builtin.include_role:
+    name: common 
+    tasks_from: systemd  # <-- systemd.yaml

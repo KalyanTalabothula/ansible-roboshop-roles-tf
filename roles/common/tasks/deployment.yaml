@@ -1,0 +1,36 @@
+
+# This script will work any programming language like python, java, anything...
+
+
+- name: stop the server
+  tags:
+  - deployment
+  ansible.builtin.service:
+    name: "{{ component }}"
+    state: stopped
+
+- name: remove the old version in /app directory
+  ansible.builtin.file:
+    path: /app
+    state: directory
+    
+
+- name: Create /app directory
+  ansible.builtin.file:
+    path: /app
+    state: directory
+
+- name: download and extract we have one module for both
+  ansible.builtin.unarchive:
+    src: "https://roboshop-artifacts.s3.amazonaws.com/{{ component }}-v{{ app_version }}.zip"
+    dest: /app
+    remote_src: yes 
+
+- name: install dependencies
+  community.general.npm:
+    path: /app
+
+- name: restart {{ component }}
+  ansible.builtin.service:
+    name: "{{ component }}"
+    state: restarted 

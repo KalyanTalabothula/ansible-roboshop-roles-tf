@@ -1,0 +1,119 @@
+# - name: disable the default nodejs 
+#   ansible.builtin.command: dnf module disable nodejs -y
+
+# - name: enable the nodejs:20 -y
+#   ansible.builtin.command: dnf module enable nodejs:20 -y
+
+# - name: Install the nodejs
+#   ansible.builtin.package:
+#     name: nodejs
+#     state: present
+- name: app setup 
+  include_role:
+    name: common 
+    tasks_from: app-setup
+
+- name: Downloading nodejs version and dependencies 
+  include_role:    # <-- Not roles
+    name: common 
+    tasks_from: nodejs
+
+
+# - name: creating a directory
+#   ansible.builtin.file:
+#     name: /app
+#     state: directory
+
+# - name: because of security running with non-rootuser and creating system user 
+#   ansible.builtin.user:
+#     name: roboshop
+#     home: /app
+#     shell: /sbin/nologin
+#     system: true
+
+# # - name: creating a directory
+# #   ansible.builtin.file:
+# #     name: /app
+# #     state: directory
+
+# - name: downloading the catalogue application code
+#   ansible.builtin.get_url:
+#     url: https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip 
+#     dest: /tmp/catalogue.zip
+
+# # this module thinks file exist on ansible control server, needs to extract on to remote machine
+# # remote_src: yes means files already exist in catalogue server
+
+# - name: now unzipping the downloaded file to extract catalogue code
+#   ansible.builtin.unarchive:
+#     src: /tmp/catalogue.zip
+#     dest: /app
+#     remote_src: yes
+
+# 🔍 calling another role tasks in ansible
+
+# - name: app setup 
+#   include_role:
+#     name: common 
+#     tasks_from: app-setup
+
+
+# - name: To run our custom microservice we need dot service file
+#   ansible.builtin.copy:
+#     src: catalogue.service
+#     dest: /etc/systemd/system/catalogue.service  
+
+# - name: Running the daemon reload because when ever we are making any change's in systemd folder 
+#   ansible.builtin.systemd_service:
+#     daemon_reload: true
+
+# - name: Enable catalogue
+#   ansible.builtin.service:
+#     name: catalogue
+#     enabled: yes
+
+# - name: start catalogue
+#   ansible.builtin.service:
+#     name: catalogue
+#     state: started
+
+
+- name: copy mongodb repo
+  ansible.builtin.copy:
+    src: mongo.repo
+    dest: /etc/yum.repos.d/mongo.repo
+
+- name: Install mongodb client to run the products 
+  ansible.builtin.package:
+    name: mongodb-mongosh
+    state: present
+
+- name: check products loaded or not
+  ansible.builtin.command: mongosh --host mongodb.kalyanu.xyz --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
+  register: catalogue_output
+# ignore_errors: true
+  
+- name: print catalogue output
+  ansible.builtin.debug:
+    msg: "{{ catalogue_output }}"
+# ignore_errors: true
+
+# why shell command means, shell command only allows redirections, variables, pips, and inputs.
+- name: load products
+  ansible.builtin.shell: mongosh --host mongodb.kalyanu.xyz < /app/db/master-data.js
+  when: catalogue_output.stdout | int < 0
+# ignore_errors: true
+# ignore_unreachable: true
+
+
+- name: systemd setup
+  include_role:
+    name: common 
+    tasks_from: systemd.yaml  # <-- systemd.yaml
+
+# - name: deployement
+#   tags:
+#   - deployment 
+#   include_role:   OR import_role
+#     name: common
+#     tasks_from: deployment

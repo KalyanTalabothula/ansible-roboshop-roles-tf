@@ -1,0 +1,34 @@
+- name: Installing mysql application IN server
+  ansible.builtin.package:
+    name: mysql-server
+    state: present # No difference between installed and present, both are same.
+
+- name: Enable mysql
+  ansible.builtin.service: 
+    name: mysqld
+    enabled: yes
+
+- name: Start mysql
+  ansible.builtin.service:
+    name: mysqld
+    state: started
+
+- name: install boto3 and botocore
+  ansible.builtin.pip:
+    name: "{{ item }}"
+    executable: pip3.9
+  loop:
+    - boto3
+    - botocore
+
+# this is download in ansible server or mysql server????  --> mysql server only right
+# Password ni tisuku ravalisimdi yevaru ??  --> ansible server
+
+# we need to install Inside ansible these.. botocore and boto3
+# andhuke manam inside ansible lo install chesesa..
+# [ ec2-user@ip-172-31-24-207 ~/ansible-roboshop-roles ] $ pip3.9 install boto3 botocore 
+# then run this as well
+# $ ansible-playbook -i inventory.ini mysql.yaml -e "component=mysql"
+
+- name: set root password
+  ansible.builtin.command: mysql_secure_installation --set-root-pass {{ MYSQL_ROOT_PASSWORD }}

@@ -1,0 +1,6 @@
+CART_HOST: cart.kalyanu.xyz
+MYSQL_HOST: mysql.kalyanu.xyz
+
+MYSQL_ROOT_USER: root 
+MYSQL_ROOT_PASSWORD: RoboShop@1
+MYSQL_ROOT_HOST: mysql.kalyanu.xyz

@@ -1,0 +1,26 @@
+- name: Installing maven and mysql
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present 
+  loop:
+  - maven
+  - mysql 
+
+- name: install PyMySQL and cryptography 
+  ansible.builtin.pip:     # .pip <---- because these are dependencies, not packages 
+    name: "{{ item }}"     # ansible build by python 
+    executable: pip3.9
+  loop:
+  - cryptography
+  - PyMySQL
+
+
+- name: To run the code we need librarices and dependencies, that's why we are installing maven
+  ansible.builtin.command: mvn clean package
+  args:
+    chdir: /app
+
+- name: After Installation we are rename jar file
+  ansible.builtin.command: "mv target/{{ component }}-1.0.jar {{ component }}.jar"
+  args:
+    chdir: /app

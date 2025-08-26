@@ -1,0 +1,6 @@
+
+
+- name: Restart nginx  # <-- this name as to be same in notify:
+  ansible.builtin.service:
+    name: nginx
+    state: restarted

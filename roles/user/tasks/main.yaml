@@ -1,0 +1,38 @@
+
+
+- name: Downloading nodejs and its version, as well as dependencies 
+  ansible.builtin.include_role:       # <-- not roles 
+    name: common
+    tasks_from: nodejs          # <-- name should match to common tasks
+
+
+- name: app setup 
+  ansible.builtin.include_role:
+    name: common
+    tasks_from: app-setup     # name should match to common tasks
+
+
+- name: systemd setup
+  ansible.builtin.include_role:
+    name: common 
+    tasks_from: systemd  # <-- systemd.yaml (or) systemd
+
+
+# - name: To run our custom microservice we need dot service file
+#   ansible.builtin.template:    # <--- not copy: its NOT template"S"
+#     src: user.service.j2
+#     dest: /etc/systemd/system/user.service.j2  # etc lo systemd ane folder lo system lo ee user.service pedutunnam
+
+# - name: Running the daemon reload because when ever we are making any change's in systemd folder 
+#   ansible.builtin.systemd_service:
+#     daemon_reload: true
+
+# - name: Enable user
+#   ansible.builtin.service:
+#     name: user
+#     enabled: yes
+
+# - name: start user
+#   ansible.builtin.service:
+#     name: user
+#     state: started

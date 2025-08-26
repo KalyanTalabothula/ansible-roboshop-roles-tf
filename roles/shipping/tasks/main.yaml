@@ -1,0 +1,48 @@
+
+
+- name: Downloading applications & version and dependencies of maven
+  ansible.builtin.include_role:    # <-- Not roles
+    name: common 
+    tasks_from: maven
+
+
+
+
+
+- name: app setup 
+  ansible.builtin.include_role:
+    name: common 
+    tasks_from: app-setup
+
+
+
+
+
+# - name: systemd setup
+#   ansible.builtin.include_role:
+#     name: common 
+#     tasks_from: systemd  # <-- systemd.yaml
+
+
+
+
+- name: import data 
+ # tags:                 # <-- tags used for, if you want to run only one task only, not all so we can use tags
+ # - import
+  community.mysql.mysql_db:
+    name: all 
+    login_user: "{{ MYSQL_ROOT_USER }}" 
+    login_password: "{{ MYSQL_ROOT_PASSWORD }}"  # Capital 'R' 'S'
+    login_host: "{{ MYSQL_ROOT_HOST }}"
+    state: import
+    target: "{{ item }}"  # target manaki chala unne load cheyataniki, andhuke manam loop chestunnam
+  loop:
+  - /app/db/schema.sql
+  - /app/db/app-user.sql 
+  - /app/db/master-data.sql
+
+
+- name: systemd setup
+  ansible.builtin.include_role:
+    name: common 
+    tasks_from: systemd  # <-- systemd.yaml

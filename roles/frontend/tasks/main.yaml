@@ -1,0 +1,53 @@
+- name: Disable the default version of nginx 
+  ansible.builtin.command: dnf module disable nginx -y
+
+- name: Enable the version of nginx:1.24
+  ansible.builtin.command: dnf module enable nginx:1.24 -y
+
+- name: Installing nginx
+  ansible.builtin.package:
+    name: nginx
+    state: present
+
+- name: Enable nginx
+  ansible.builtin.service:
+    name: nginx
+    enabled: yes
+
+- name: start nginx
+  ansible.builtin.service:
+    name: nginx
+    state: started
+
+- name: Remove default html content of nginx
+  ansible.builtin.file:
+    path: /usr/share/nginx/html
+    state: absent
+
+- name: keeping our roboshop content on html page
+  ansible.builtin.file:
+    path: /usr/share/nginx/html
+    state: directory
+
+- name: Downloading our frontend code
+  ansible.builtin.get_url:
+    url: https://roboshop-artifacts.s3.amazonaws.com/frontend-v3.zip
+    dest: /tmp/frontend.zip
+
+- name: Unzip/Extract the fronetend code
+  ansible.builtin.unarchive:
+    src: /tmp/frontend.zip
+    dest: /usr/share/nginx/html
+    remote_src: yes
+
+- name: remove default ngin configure
+  ansible.builtin.file:
+    path: /etc/nginx/nginx.conf
+    state: absent
+
+- name: copy roboshop nginx conf
+  ansible.builtin.template:   # <-- not copy:
+    src: nginx.conf.j2            #  <--- Don't forget to keep this { .j2 }
+    dest: /etc/nginx/nginx.conf.j2
+  notify:                        # notify chestunnam manam, if we change anthing in nginx.conf lo appude restart chey
+    - Restart nginx           # <-- Capital (R) and name as to be same in handlers as well.
