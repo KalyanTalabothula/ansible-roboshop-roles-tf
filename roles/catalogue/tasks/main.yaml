@@ -89,7 +89,7 @@
     state: present
 
 - name: check products loaded or not
-  ansible.builtin.command: mongosh --host mongodb.kalyanu.xyz --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
+  ansible.builtin.command: mongosh --host {{ MONGODB_HOST }} --eval 'db.getMongo().getDBNames().indexOf("catalogue")'
   register: catalogue_output
 # ignore_errors: true
   
@@ -100,7 +100,7 @@
 
 # why shell command means, shell command only allows redirections, variables, pips, and inputs.
 - name: load products
-  ansible.builtin.shell: mongosh --host mongodb.kalyanu.xyz < /app/db/master-data.js
+  ansible.builtin.shell: mongosh --host {{ MONGODB_HOST }} < /app/db/master-data.js
   when: catalogue_output.stdout | int < 0
 # ignore_errors: true
 # ignore_unreachable: true
