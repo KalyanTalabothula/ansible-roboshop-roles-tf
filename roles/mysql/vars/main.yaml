@@ -4,7 +4,7 @@
 # - name: Lookup ssm parameter store in specified region
 # ansible.builtin.debug: msg="{{ lookup('amazon.aws.aws_ssm', 'Hello', region='us-east-2' ) }}"
 
-MYSQL_ROOT_PASSWORD: "{{ lookup('amazon.aws.aws_ssm', '/roboshop/mysql/mysql_root_password', region='us-east-1', decrypt=True ) }}"
+MYSQL_ROOT_PASSWORD: "{{ lookup('amazon.aws.aws_ssm', '/roboshop/{{ env }}/mysql/mysql_root_password', region='us-east-1', decrypt=True ) }}"
 
 # so now we push in to GitHub, it is perfectly safe. and we need Authutication too, we already created right. IAM ROle.
 
@@ -13,3 +13,5 @@ MYSQL_ROOT_PASSWORD: "{{ lookup('amazon.aws.aws_ssm', '/roboshop/mysql/mysql_roo
 # ansible-playbook -i inventory.ini mysql.yaml -e "component=mysql"
 
 # yes, i will connect, to connet the ssm parameters, i need some librarys kavali ani adugutumdhi aa libraries botocore and boto3. 
+
+# line number:7  we changed{{ env }}
