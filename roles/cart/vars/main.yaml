@@ -1,2 +1,2 @@
-REDIS_HOST: redis.kalyanu.xyz
-CATALOGUE_HOST: catalogue.kalyanu.xyz
+REDIS_HOST: redis-{{ env }}.kalyanu.xyz
+CATALOGUE_HOST: catalogue.backend-{{ env }}.kalyanu.xyz  # catalogue.backend-dev.kalyanu.xyz

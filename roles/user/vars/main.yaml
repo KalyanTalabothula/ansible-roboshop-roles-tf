@@ -1,2 +1,2 @@
-REDIS_HOST: redis.kalyanu.xyz
-MONGODB_HOST: mongodb.kalyanu.xyz
+REDIS_HOST: redis-{{ env }}.kalyanu.xyz
+MONGODB_HOST: mongodb-{{ env }}.kalyanu.xyz

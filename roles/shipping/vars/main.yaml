@@ -1,5 +1,5 @@
-CART_HOST: cart.kalyanu.xyz
-MYSQL_HOST: mysql.kalyanu.xyz
+CART_HOST: cart.backend-{{ env }}.kalyanu.xyz
+MYSQL_HOST: mysql-{{ env }}.kalyanu.xyz
 
 MYSQL_ROOT_USER: root 
 MYSQL_ROOT_PASSWORD: RoboShop@1
