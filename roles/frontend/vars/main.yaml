@@ -1,5 +1,5 @@
-CATALOGUE_HOST: catalogue.kalyanu.xyz
-USER_HOST: user.kalyanu.xyz
-CART_HOST: cart.kalyanu.xyz
-SHIPPING_HOST: shipping.kalyanu.xyz
-PAYMENT_HOST: payment.kalyanu.xyz
+CATALOGUE_HOST: catalogue.backend-{{ env }}.kalyanu.xyz
+USER_HOST: user.backend-{{ env }}.kalyanu.xyz
+CART_HOST: cart.backend-{{ env }}.kalyanu.xyz
+SHIPPING_HOST: shipping.backend-{{ env }}.kalyanu.xyz
+PAYMENT_HOST: payment.backend-{{ env }}.kalyanu.xyz
